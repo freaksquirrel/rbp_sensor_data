@@ -20,6 +20,9 @@ def plotCO2_scatter(data_fname='', date_key='', plot_save_path='./'):
     plot_fname = os.path.join(plot_save_path, 'graph_scatter_co2vals_' + date_key + '.png')
     #get the data from the json file
     allvals = json.load(open(data_fname, 'r'))
+    if date_key not in allval.keys():
+        print('Date ({}) does not exists in the JSON file. Graph will not be created.'.format(date_key))
+        return False
     todayvals = allvals[date_key][0]
     todayvals_sorted = ordDict(sorted(todayvals.items()))
     yAxis  = [value for key, value in todayvals_sorted.items()]
@@ -29,9 +32,10 @@ def plotCO2_scatter(data_fname='', date_key='', plot_save_path='./'):
         xAxis[index] = (float(key.split(' ')[1].split(':')[0])) + (float(key.split(' ')[1].split(':')[1]) / 60)
 
     #Format the plot   (this part is still on cunstruction....)
-    #plt.grid(True)
-    fig, ax = plt.subplots(figsize=(24, 5))
-    plt.plot(xAxis,yAxis, color='blue', marker='o')
+    plt.style.use('dark_background')
+    fig, ax = plt.subplots(figsize=(10, 5))
+    plt.plot(xAxis,yAxis, color='limegreen', marker='v')
+    plt.grid(True)
     plt.xlim([0,(24)])
     plt.ylim([0,(5000)])
     plt.title('Air Quality @ {}'.format(date_key))
