@@ -20,7 +20,7 @@ def plotCO2_scatter(data_fname='', date_key='', plot_save_path='./'):
     plot_fname = os.path.join(plot_save_path, 'graph_scatter_co2vals_' + date_key + '.png')
     #get the data from the json file
     allvals = json.load(open(data_fname, 'r'))
-    if date_key not in allval.keys():
+    if date_key not in allvals.keys():
         print('Date ({}) does not exists in the JSON file. Graph will not be created.'.format(date_key))
         return False
     todayvals = allvals[date_key][0]
