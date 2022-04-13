@@ -57,12 +57,15 @@ def getCO2val():
     # get the time first
     current_time = dt.datetime.now().strftime('%Y-%m-%d %H:%M')
     # then read the CO2 values
+    tempdata = {}
     co2_val = mh_z19.read()
-    # temp output format
-    tempdata = {current_time : int(co2_val['co2'])}
-    # Storage with debug mode on since I intend to call it on a cron-job and want to keep a log
-    result = addCO2valEntry( tempdata, True )     
-    return result
+    if( co2_val ):     # check if the value returned is valid
+        # temp output format
+        tempdata = {current_time : int(co2_val['co2'])}
+        ## Storage with debug mode on since I intend to call it on a cron-job and want to keep a log
+        #result = addCO2valEntry( tempdata, True )
+        #return result        
+    return tempdata
 
 # this function is not tested yet... used to work before on a different script though...
 def getTempRaspBP( debugprint = False ):
@@ -82,11 +85,17 @@ if __name__ == '__main__':
     parser.add_argument("--mz_z19_all", action='store_true', help="Get CO2 and temperature values from MH-Z19B sensor")
     parser.add_argument("--plot_co2", action='store_true', help="Plot CO2 values and store somewhere...")
     parser.add_argument("--plot_co2_date", action='store', help="Plot CO2 values and store somewhere...")
+    parser.add_argument("-p", action='store_true', help="Print out values on terminal")
     args = parser.parse_args()
 
     if args.co2:
-        res = getCO2val()
-        print('Got CO2 values and the store results was: {}   ({})'.format(res, dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
+        co2_and_date = getCO2val()
+        if( co2_and_date ):
+            # Storage with debug mode on since I intend to call it on a cron-job and want to keep a log
+            res = addCO2valEntry( co2_and_date, True )
+            print('Got CO2 values and the store results was: {}   ({})'.format(res, dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
+        else:
+            print('Error! not able to get data from sensor ({})'.format(dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
     elif args.mz_z19_all:
         # nothing yet
         print("CO2 and temperature values")
@@ -97,7 +106,13 @@ if __name__ == '__main__':
     elif args.plot_co2_date:
         plotres = rbps_pltdata.plotCO2_scatter(data_fname=rbps_io.mhz19b_co2_log, date_key=args.plot_co2_date, plot_save_path=rbps_io.graphs_path)
         print('Plot result was: {}   ({})'.format(plotres, dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
-    else:
-        print("Please select an option... I dont have a default behavior yet...")
+    elif args.p:
+        co2_and_date = getCO2val()
+        #check if datapoint is valid
+        if( co2_and_date ):
+            print('CO2 value -> {}'. format([*co2_and_date.values()][0]))
+        else:
+            print('error... did not receive the kind of results i was expecting')
         
+    
     sys.exit(0)
