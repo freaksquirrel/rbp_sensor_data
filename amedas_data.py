@@ -14,13 +14,15 @@ import amedas_config as a_cfg
 
 def create_req_url_from_datetime( target_datetime = "" ):
     if( not isinstance(target_datetime, dt.datetime) ): target_datetime = dt.datetime.now()
-    datetime_str = target_datetime.strftime('%Y%m%d%H')
+    #datetime_str = target_datetime.strftime('%Y%m%d%H')
+    datetime_str = target_datetime.strftime('%Y%m%d%H00')
     amedas_req_url = a_cfg.url_format.replace(a_cfg.replace_target, datetime_str)
     return amedas_req_url
 
 #Note: seems like past data is only available for the 10 days previous to current data 
 def create_req_url_from_str( target_datetime = "" ):
-    if( target_datetime == ""): target_datetime = dt.datetime.now().strftime('%Y%m%d%H')
+    #if( target_datetime == ""): target_datetime = dt.datetime.now().strftime('%Y%m%d%H')
+    if( target_datetime == ""): target_datetime = dt.datetime.now().strftime('%Y%m%d%H00')
     amedas_req_url = a_cfg.url_format.replace(a_cfg.replace_target, target_datetime)
     return amedas_req_url
 
@@ -94,12 +96,12 @@ def addWeatherValEntry( datapoint, debugprint = False, area_code = 0, entry_date
             tempdata.update({entry_date_key:datapoint_tmp})
             # consider checking if value for that time is already in the list or not
             if( debugprint == True) : print('Created the key {} and added the datapoint {} \n'.format(entry_date_key, datapoint_tmp))
-            #finally, re-write json file
-            tempfile = open(a_cfg.amedas_log,'w')
-            json.dump(tempdata, tempfile, sort_keys=True)
-            if( debugprint == True) : print('Re-wrote data to file {} \n'.format(a_cfg.amedas_log))
-            tempfile.close()
-            return True            
+        #finally, re-write json file
+        tempfile = open(a_cfg.amedas_log,'w')
+        json.dump(tempdata, tempfile, sort_keys=True)
+        if( debugprint == True) : print('Re-wrote data to file {} \n'.format(a_cfg.amedas_log))
+        tempfile.close()
+        return True
     else:
         print("error")
         return False
