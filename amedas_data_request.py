@@ -9,8 +9,7 @@ import datetime as dt
 import json
 import amedas_config as a_cfg
 import amedas_funcs as a_fnc
-
-
+import amedas_plot_funcs as a_plt_fnc
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser( description="Get weather data from AMEADAS api...",  )
@@ -20,6 +19,8 @@ if __name__ == '__main__':
     parser.add_argument("--datetime",  help="YYYY-MM-DD-HH-MM format")
     parser.add_argument("-p", action='store_true', help="Print out values on terminal")
     parser.add_argument("--batch", action='store_true', help="Get each 10 min weather values for last hour")
+    parser.add_argument("--plot_temp", action='store_true', help="Plot temperature values and store somewhere...")
+    parser.add_argument("--plot_hum", action='store_true', help="Plot humidity values and store somewhere...")
     args = parser.parse_args()
 
     # set the date for the weather data query
@@ -60,7 +61,14 @@ if __name__ == '__main__':
             query_datetime = dt.datetime.strptime(target_datetime.strftime('%Y%m%d%H'+str(minute)+'0'), '%Y%m%d%H%M')
             print('Time {} and code {}'. format(query_datetime, a_cfg.area_code))
             res = a_fnc.requestAndStoreWeatherInfo( query_datetime, a_cfg.area_code )
-            
+    elif args.plot_temp:
+        #plot a scatter graph of the temperature values from a Amedas Json file
+        plotres = a_plt_fnc.plotAmedasTempScatter(data_fname=a_cfg.amedas_log, plot_save_path=a_cfg.graphs_path)
+        print('Plot result was: {}   ({})'.format(plotres, dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
+    elif args.plot_hum:
+        #plot a scatter graph of the humidity values from a Amedas Json file
+        plotres = a_plt_fnc.plotAmedasHumidityScatter(data_fname=a_cfg.amedas_log, plot_save_path=a_cfg.graphs_path)
+        print('Plot result was: {}   ({})'.format(plotres, dt.datetime.now().strftime('%Y-%m-%d %H:%M')))
     else:
         weather_data = a_fnc.request_weather_data()
         if( weather_data ):

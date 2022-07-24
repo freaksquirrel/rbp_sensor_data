@@ -11,6 +11,8 @@ iofiles_path = '/home/squirrel/repos/rbp_sensor_data/datafiles'
 amedas_fname  = 'amedas_vals.json'
 amedas_log  = os.path.join(iofiles_path, amedas_fname)
 
+## Path and filenames for graphs
+graphs_path = '/var/www/html/freaksquirrel/plots/amedas/'
 
 #"40201":{
 #    "temp":[22.8,0],
