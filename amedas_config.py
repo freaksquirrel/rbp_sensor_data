@@ -13,19 +13,36 @@ amedas_log  = os.path.join(iofiles_path, amedas_fname)
 
 ## Path and filenames for graphs
 graphs_path = '/var/www/html/freaksquirrel/plots/amedas/'
+graphs_file_ext = '.png'
+graph_temp_fname = 'graph_scatter_amedas_temp_'
+graph_hum_fname = 'graph_scatter_amedas_humidity_'
+graph_rain_fname = 'graph_scatter_amedas_precipitacion_'
+graph_wind_fname = 'graph_scatter_amedas_wind_'
+graph_generic_fname = 'graph_scatter_amedas_generic_'
+graph_temphum_fname = 'graph_scatter_amedas_temp-humi_'
 
-#"40201":{
-#    "temp":[22.8,0],
-#    "humidity":[93,0],
-#    "snow":[null,5],
-#    "weather":[7,0],
-#    "sun10m":[0,0],
-#    "sun1h":[0.0,0],
-#    "precipitation10m":[0.0,0],
-#    "precipitation1h":[0.5,0],
-#    "precipitation3h":[2.0,0],
-#    "precipitation24h":[7.0,0],
-#    "windDirection":[2,0],
-#    "wind":[4.2,0]},"
+graph_title_label = {"temp":['Temperature','Temp [C]'],
+                     "humidity":['Humidity','Humidity [%]'],
+                     "snow":['Snow','Snow [mm?]'],
+                     "weather":['Weather','???'],
+                     "sun10m":['Sunlight per Hour (prev 10 min)','Sun time / 1hr'],
+                     "sun1h":['Sunlight per Hour (prev 1 hour)','Sun time / 1hr'],
+                     "precipitation10m":['Precipitation (prev 10min)','Precipitation [mm]'],
+                     "precipitation1h":['Precipitation (prev 1 hr)','Precipitation [mm]'],
+                     "precipitation3h":['Precipitation (prev 3 hr)','Precipitation [mm]'],
+                     "precipitation24h":['Precipitation (prev 24hr)','Precipitation [mm]'],
+                     "windDirection":['Wind direction', '16 directions'],
+                     "wind":['Wind','Wind [m/s]'] }
 
-# res_  = {'normalPressure': [1000.4, 0], 'snow6h': [0, 6], 'wind': [1.3, 0], 'snow1h': [0, 6], 'snow': [None, 5], 'snow12h': [0, 6], 'sun1h': [0.0, 0], 'precipitation1h': [0.0, 0], 'precipitation3h': [0.0, 0], 'precipitation24h': [0.0, 0], 'weather': [1, 0], 'temp': [24.3, 0], 'precipitation10m': [0.0, 0], 'sun10m': [0, 0], 'windDirection': [3, 0], 'pressure': [996.9, 0], 'snow24h': [0, 6], 'humidity': [82, 0], 'visibility': [16790.0, 0]}
+graph_amedas_dic = {"temp":['Temperature','Temp [C]', 'graph_scatter_amedas_temp_'],
+                    "humidity":['Humidity','Humidity [%]', 'graph_scatter_amedas_humidity_'],
+                    "snow":['Snow','Snow [mm?]', 'graph_scatter_amedas_snow_'],
+                    "weather":['Weather','???', 'graph_scatter_amedas_weather_'],
+                    "sun10m":['Sunlight per Hour (prev 10 min)','Sun time / 1hr', 'graph_scatter_amedas_sunper10min_'],
+                    "sun1h":['Sunlight per Hour (prev 1 hour)','Sun time / 1hr', 'graph_scatter_amedas_sunperhour_'],
+                    "precipitation10m":['Precipitation (prev 10min)','Precipitation [mm]','graph_scatter_amedas_precipitacion10min_'],
+                    "precipitation1h":['Precipitation (prev 1 hr)','Precipitation [mm]','graph_scatter_amedas_precipitacion_'],
+                    "precipitation3h":['Precipitation (prev 3 hr)','Precipitation [mm]','graph_scatter_amedas_precipitacion3h_'],
+                    "precipitation24h":['Precipitation (prev 24hr)','Precipitation [mm]','graph_scatter_amedas_precipitacion24h_'],
+                    "windDirection":['Wind direction', '16 directions','graph_scatter_amedas_windirection_'],
+                    "wind":['Wind','Wind [m/s]','graph_scatter_amedas_wind_'] }
