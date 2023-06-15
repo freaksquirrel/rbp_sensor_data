@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import binascii
 from bluepy.btle import Scanner, DefaultDelegate
 import datetime as dt
 import json
 import os.path
-import switchbot_config as swb_cfg
+import rbp_sensor_config_switchbot as rbp_swb_cfg
 import rbp_sensor_iofiles as rbps_io
 
 
@@ -19,7 +20,7 @@ class ScanDelegate(DefaultDelegate):
     def handleDiscovery(self, dev, isNewDev, isNewData):
         disc_time = dt.datetime.now()#.strftime('%H:%M')
         # get the mac addrs of the devices to look for...
-        mac_addrs = [sub['macaddr'] for sub in swb_cfg.BTsensors]
+        mac_addrs = [sub['macaddr'] for sub in rbp_swb_cfg.BTsensors]
         # finish the process if the discovered device is not in the list
         if dev.addr not in mac_addrs : return
         
@@ -35,7 +36,7 @@ class ScanDelegate(DefaultDelegate):
             #
             #print("current address: {}".format(dev.addr))
             # Add the acquired data to a dictionary to be added to a final list
-            sensor_info = next((sens_info for sens_info in swb_cfg.BTsensors if sens_info["macaddr"] == dev.addr), None)
+            sensor_info = next((sens_info for sens_info in rbp_swb_cfg.BTsensors if sens_info["macaddr"] == dev.addr), None)
             sensor_info['battery'] = battery
             sensor_info['temperature'] = temperature
             sensor_info['humidity'] = humidity
